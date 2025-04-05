@@ -2,9 +2,8 @@ export default {
   apps: [
     {
       name: "server-fingenius-ai",
-      script: "npm",
-      args: "run start",
-      interpreter: "bash",
+      script: "src/index.js",
+      interpreter: "node",
       env: {
         NODE_ENV: "development",
         ENV_VAR1: "environment-variable",
