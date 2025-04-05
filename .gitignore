@@ -1,0 +1,9 @@
+Client/demo-ai-financial-app/node_modules/
+Server/node_modules/
+Client/demo-ai-financial-app/dist/
+Server/dist/
+Client/demo-ai-financial-app/.env
+Server/.env
+Client/demo-ai-financial-app/.next/
+# clerk configuration (can include secrets)
+Client/.clerk/
