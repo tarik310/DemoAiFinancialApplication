@@ -1,7 +1,5 @@
 "use server";
 
-import aj from "@/lib/arcjet";
-import { request } from "@arcjet/next";
 import { auth } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
@@ -45,31 +43,6 @@ export async function createAccount(data) {
       userID = userId;
     }
 
-    // Get request data for ArcJet
-    const req = await request();
-
-    // Check rate limit
-    const decision = await aj.protect(req, {
-      userID,
-      requested: 1, // Specify how many tokens to consume
-    });
-
-    if (decision.isDenied()) {
-      if (decision.reason.isRateLimit()) {
-        const { remaining, reset } = decision.reason;
-        console.error({
-          code: "RATE_LIMIT_EXCEEDED",
-          details: {
-            remaining,
-            resetInSeconds: reset,
-          },
-        });
-
-        throw new Error("Too many requests. Please try again later.");
-      }
-
-      throw new Error("Request blocked");
-    }
     const params = { userid: userID };
     const res = await fetch(`${process.env.BACKEND_API_URL}dashboard/${params.userid}`, {
       method: "POST",
