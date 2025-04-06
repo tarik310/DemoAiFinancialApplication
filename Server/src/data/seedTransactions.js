@@ -1,9 +1,6 @@
 import { subDays, addDays } from "date-fns";
 import { db } from "../../lib/prisma.js";
 
-const ACCOUNT_ID = "account-id";
-const USER_ID = "user-id";
-
 // Define income categories with realistic intervals
 const INCOME_CATEGORIES = [
   { name: "salary", range: [4500, 6000], interval: [28, 32] }, // Monthly salary
@@ -39,6 +36,7 @@ function getRandomInterval(min, max) {
 
 export const seedTransactions = async (req, res) => {
   try {
+    const { accid, userid } = req.params;
     const transactions = [];
     let totalBalance = 0;
 
@@ -58,8 +56,8 @@ export const seedTransactions = async (req, res) => {
           date: currentDate,
           category: category.name,
           status: "COMPLETED",
-          userId: USER_ID,
-          accountId: ACCOUNT_ID,
+          userId: userid,
+          accountId: accid,
           createdAt: currentDate,
           updatedAt: currentDate,
         };
@@ -86,8 +84,8 @@ export const seedTransactions = async (req, res) => {
           date: currentDate,
           category: category.name,
           status: "COMPLETED",
-          userId: USER_ID,
-          accountId: ACCOUNT_ID,
+          userId: userid,
+          accountId: accid,
           createdAt: currentDate,
           updatedAt: currentDate,
         };
@@ -105,7 +103,7 @@ export const seedTransactions = async (req, res) => {
     await db.$transaction(async (tx) => {
       // Remove existing transactions for this account
       await tx.transaction.deleteMany({
-        where: { accountId: ACCOUNT_ID },
+        where: { accountId: accid },
       });
 
       // Insert newly generated transactions
@@ -115,7 +113,7 @@ export const seedTransactions = async (req, res) => {
 
       // Update account balance
       await tx.account.update({
-        where: { id: ACCOUNT_ID },
+        where: { id: accid },
         data: { balance: totalBalance },
       });
     });
