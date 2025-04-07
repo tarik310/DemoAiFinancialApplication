@@ -1,4 +1,4 @@
-# FinGinus AI
+# FinGenius AI
 
 This is a cutting-edge financial management application powered by AI. It provides a complete solution for tracking, analyzing, and optimizing personal finances by leveraging artificial intelligence to generate actionable insights and reports.
 
