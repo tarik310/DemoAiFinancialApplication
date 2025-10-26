@@ -8,20 +8,26 @@ export async function getUserAccounts() {
   let userID;
 
   const isDemo = (await headers()).get("x-in-demo");
+  console.log("isDemo flag:", isDemo);
   if (isDemo) {
+    console.log("Using demo user path");
     userID = process.env.DEMO_USER_ID;
   } else {
+    console.log("Using authenticated user path");
     const { userId } = await auth();
     if (!userId) throw new Error("Unauthorized");
     userID = userId;
   }
   try {
     const params = { userid: userID };
-    const res = await fetch(`${process.env.BACKEND_API_URL}dashboard/${params.userid}`, {
-      method: "GET",
-      headers: { "Content-Type": "application/json" },
-      cache: "no-store",
-    });
+    const res = await fetch(
+      `${process.env.BACKEND_API_URL}dashboard/${params.userid}`,
+      {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+        cache: "no-store",
+      }
+    );
 
     const jsonData = await res.json();
     return jsonData;
@@ -44,12 +50,15 @@ export async function createAccount(data) {
     }
 
     const params = { userid: userID };
-    const res = await fetch(`${process.env.BACKEND_API_URL}dashboard/${params.userid}`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-      cache: "no-store",
-    });
+    const res = await fetch(
+      `${process.env.BACKEND_API_URL}dashboard/${params.userid}`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+        cache: "no-store",
+      }
+    );
     const jsonData = await res.json();
     if (isDemo) {
       revalidatePath("/demo/dashboard");
