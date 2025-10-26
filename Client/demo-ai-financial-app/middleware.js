@@ -16,7 +16,10 @@ const clerk = clerkMiddleware(async (auth, req) => {
   const res = NextResponse.next();
 
   if (isDemo) {
-    res.headers.set("x-in-demo", "true");
+    // res.headers.set("x-in-demo", "true");
+    res.cookies.set("x-in-demo", "true");
+  } else {
+    res.cookies.delete("x-in-demo");
   }
 
   if (!userId && isProtectedRoute(req)) {

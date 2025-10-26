@@ -2,18 +2,16 @@
 
 import { auth } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
-import { headers } from "next/headers";
+import { cookies } from "next/headers";
 
 export async function getUserAccounts() {
   let userID;
 
-  const isDemo = (await headers()).get("x-in-demo");
-  console.log("isDemo flag:", isDemo);
+  // const isDemo = (await headers()).get("x-in-demo");
+  const isDemo = (await cookies()).get("x-in-demo")?.value === "true";
   if (isDemo) {
-    console.log("Using demo user path");
     userID = process.env.DEMO_USER_ID;
   } else {
-    console.log("Using authenticated user path");
     const { userId } = await auth();
     if (!userId) throw new Error("Unauthorized");
     userID = userId;
@@ -40,7 +38,7 @@ export async function createAccount(data) {
   try {
     let userID;
 
-    const isDemo = (await headers()).get("x-in-demo");
+    const isDemo = (await cookies()).get("x-in-demo")?.value === "true";
     if (isDemo) {
       userID = process.env.DEMO_USER_ID;
     } else {
@@ -75,7 +73,7 @@ export async function createAccount(data) {
 export async function getDashboardData() {
   let userID;
 
-  const isDemo = (await headers()).get("x-in-demo");
+  const isDemo = (await cookies()).get("x-in-demo")?.value === "true";
   if (isDemo) {
     userID = process.env.DEMO_USER_ID;
   } else {

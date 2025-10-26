@@ -2,14 +2,14 @@
 
 import { auth } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
-import { headers } from "next/headers";
+import { cookies } from "next/headers";
 
 // Create Transaction
 export async function createTransaction(data) {
   try {
     let userID;
 
-    const isDemo = (await headers()).get("x-in-demo");
+    const isDemo = (await cookies()).get("x-in-demo")?.value === "true";
     if (isDemo) {
       userID = process.env.DEMO_USER_ID;
     } else {
@@ -46,7 +46,7 @@ export async function createTransaction(data) {
 export async function getTransaction(id) {
   let userID;
 
-  const isDemo = (await headers()).get("x-in-demo");
+  const isDemo = (await cookies()).get("x-in-demo")?.value === "true";
   if (isDemo) {
     userID = process.env.DEMO_USER_ID;
   } else {
@@ -72,7 +72,7 @@ export async function updateTransaction(id, data) {
   try {
     let userID;
 
-    const isDemo = (await headers()).get("x-in-demo");
+    const isDemo = (await cookies()).get("x-in-demo")?.value === "true";
     if (isDemo) {
       userID = process.env.DEMO_USER_ID;
     } else {
