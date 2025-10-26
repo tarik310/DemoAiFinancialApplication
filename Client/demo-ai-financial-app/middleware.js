@@ -39,4 +39,4 @@ export const config = {
   ],
 };
 
-export const runtime = "edge";
+export const runtime = "experimental-edge";
