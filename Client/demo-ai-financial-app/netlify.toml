@@ -5,12 +5,3 @@
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
-  
-# Add these for better header handling
-[functions]
-  node_bundler = "esbuild"
-
-[[headers]]
-  for = "/*"
-  [headers.values]
-    X-Forwarded-Proto = "https"
